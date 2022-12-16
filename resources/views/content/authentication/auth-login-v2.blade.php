@@ -65,8 +65,8 @@ $configData = Helper::applClasses();
                 <div class="input-group-append">
                     <span class="input-group-text cursor-pointer">
                         <i data-feather="eye"></i>
-                      </span>
-                  </div>
+                    </span>
+                </div>
               </div>
             </div>
             <button class="btn btn-primary btn-block" tabindex="4">Sign in</button>

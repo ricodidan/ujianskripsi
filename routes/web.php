@@ -40,6 +40,14 @@ Route::group(['prefix' => 'dashboard'], function () {
 });
 /* Route Dashboards */
 
+
+Route::get('/balita', [App\Http\Controllers\BalitaController::class, 'index'])->name('balita');
+Route::get('/balita/create', [App\Http\Controllers\BalitaController::class, 'create']);
+Route::post('/balita/create', [App\Http\Controllers\BalitaController::class, 'createSubmit']);
+Route::get('/balita/edit/{id}', [App\Http\Controllers\BalitaController::class, 'edit']);
+Route::post('/balita/edit/{id}', [App\Http\Controllers\BalitaController::class, 'editSubmit']);
+Route::get('/balita/delete/{id}', [App\Http\Controllers\BalitaController::class, 'delete']);
+
 /* Route Apps */
 Route::group(['prefix' => 'app'], function () {
     Route::get('email', [AppsController::class, 'emailApp'])->name('app-email');
