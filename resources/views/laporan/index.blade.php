@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Data Balita')
+@section('title', 'Laporan Rekomendasi')
 
 @section('vendor-style')
   {{-- Page Css files --}}
@@ -25,13 +25,6 @@
       </div>
     </div>
   </div>
-  <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
-    <div class="form-group breadcrumb-right">
-      <div class="dropdown">
-        <a href="{{ url('balita/create') }}" class="btn add-new btn-primary" tabindex="0"><span>Tambah Balita</span></a> 
-      </div>
-    </div>
-  </div>
 </div>
 <!-- users list start -->
 <section class="app-user-list">
@@ -41,24 +34,18 @@
       <table class="user-list-table table">
         <thead class="thead-light">
           <tr>
-            <th>Nama</th>
-            <th>Tanggal Lahir</th>
-            <th>Jenis Kelamin</th>
-            <th>Berat Badan (kg)</th>
-            <th>Tinggi Badan (cm)</th>
+            <th>Tanggal</th>
+            <th>Dibuat oleh</th>
             <th>Action</th>
           </tr>
         </thead>
         
         <tbody>
-          @foreach($listBalita as $balita)
+          @foreach($rekomendasi as $data)
           <tr>
-              <td>{{ $balita->nama }}</td>
-              <td>{{ $balita->tanggal_lahir->format('d/m/Y') }}</td>
-              <td>{{ $balita->jenis_kelamin }}</td>
-              <td>{{ $balita->getNilaiKriteria($balita->id_balita, $idKriteriaBB)->nilai }}</td>
-              <td>{{ $balita->getNilaiKriteria($balita->id_balita, $idKriteriaTB)->nilai }}</td>
-              <td><a href="{{ url('/balita/edit/'.$balita->id_balita) }}">Ubah</a> | <a href="{{ url('/balita/delete/'.$balita->id_balita) }}" onclick="return confirm('Apakah anda yakin?')">Hapus</a></td>
+              <td>{{ $data->created_at->format('d/m/Y') }}</td>
+              <td>{{ App\Models\User::find($data->id_user)->nama }}</td>
+              <td><a href="{{ url('/laporan/'.$data->id_rekomendasi) }}">Lihat</a></td>
           </tr>
           @endforeach
         </tbody>

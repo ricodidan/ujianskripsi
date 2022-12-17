@@ -42,11 +42,20 @@ Route::group(['prefix' => 'dashboard'], function () {
 
 
 Route::get('/balita', [App\Http\Controllers\BalitaController::class, 'index'])->name('balita');
-Route::get('/balita/create', [App\Http\Controllers\BalitaController::class, 'create']);
+Route::get('/balita/create', [App\Http\Controllers\BalitaController::class, 'create'])->name('balita');
 Route::post('/balita/create', [App\Http\Controllers\BalitaController::class, 'createSubmit']);
-Route::get('/balita/edit/{id}', [App\Http\Controllers\BalitaController::class, 'edit']);
+Route::get('/balita/edit/{id}', [App\Http\Controllers\BalitaController::class, 'edit'])->name('balita');
 Route::post('/balita/edit/{id}', [App\Http\Controllers\BalitaController::class, 'editSubmit']);
 Route::get('/balita/delete/{id}', [App\Http\Controllers\BalitaController::class, 'delete']);
+Route::get('/ajax/getDataBalita', [App\Http\Controllers\BalitaController::class, 'getDataBalita']);
+
+Route::get('/rekomendasi', [App\Http\Controllers\RekomendasiController::class, 'index'])->name('rekomendasi');
+Route::post('/rekomendasi/hitung', [App\Http\Controllers\RekomendasiController::class, 'hitung']);
+
+Route::get('/laporan', [App\Http\Controllers\LaporanController::class, 'index'])->name('laporan-rekomendasi');
+Route::get('/laporan/{id}', [App\Http\Controllers\LaporanController::class, 'detail'])->name('laporan-rekomendasi');
+
+Route::get('/help', [App\Http\Controllers\HelpController::class, 'index'])->name('help');
 
 /* Route Apps */
 Route::group(['prefix' => 'app'], function () {

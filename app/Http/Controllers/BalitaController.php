@@ -28,7 +28,7 @@ class BalitaController extends Controller
         $idBB = Kriteria::getKriteriaByName('Berat Badan')->id_kriteria;
         $idTB = Kriteria::getKriteriaByName('Tinggi Badan')->id_kriteria;
 
-        return view('balita.app-user-list', ['listBalita' => $listBalita, 'idKriteriaBB' => $idBB, 'idKriteriaTB' => $idTB]);
+        return view('balita.index', ['listBalita' => $listBalita, 'idKriteriaBB' => $idBB, 'idKriteriaTB' => $idTB]);
     }
 
     public function create()
@@ -50,7 +50,7 @@ class BalitaController extends Controller
             'alamat' => $request['alamat'],
             'nama_ibu' => $request['nama_ibu'],
             'nama_ayah' => $request['nama_ayah'],
-            'tanggal_lahir' => Carbon::createFromFormat('d/m/Y', $request['tanggal_lahir']),
+            'tanggal_lahir' => $request['tanggal_lahir'],
             'jenis_kelamin' => $request['jenis_kelamin'],
         ]);
 
@@ -94,7 +94,7 @@ class BalitaController extends Controller
         $idBB = Kriteria::getKriteriaByName('Berat Badan')->id_kriteria;
         $idTB = Kriteria::getKriteriaByName('Tinggi Badan')->id_kriteria;
 
-        return view('balita.app-user-edit', ['balita' => $balita, 'idKriteriaBB' => $idBB, 'idKriteriaTB' => $idTB]);
+        return view('balita.edit', ['balita' => $balita, 'idKriteriaBB' => $idBB, 'idKriteriaTB' => $idTB]);
     }
     
     public function editSubmit(Request $request, $id)
@@ -112,7 +112,7 @@ class BalitaController extends Controller
         $balita->alamat = $request['alamat'];
         $balita->nama_ibu = $request['nama_ibu'];
         $balita->nama_ayah = $request['nama_ayah'];
-        $balita->tanggal_lahir = Carbon::createFromFormat('d/m/Y', $request['tanggal_lahir']);
+        $balita->tanggal_lahir = $request['tanggal_lahir'];
         $balita->jenis_kelamin = $request['jenis_kelamin'];
         $balita->save();
 
@@ -186,7 +186,7 @@ class BalitaController extends Controller
             'alamat' => ['required', 'string', 'max:255'],
             'nama_ibu' => ['required', 'string', 'max:100'],
             'nama_ayah' => ['required', 'string', 'max:100'],
-            'tanggal_lahir' => ['required', 'date_format:d/m/Y', 'max:100', 'after:' . Carbon::now()->subYears(5), 'before:today'],
+            'tanggal_lahir' => ['required', 'date_format:Y/m/d', 'max:100', 'after:' . Carbon::now()->subYears(5), 'before:today'],
             'jenis_kelamin' => ['required', 'string', 'max:1'],
             'berat_badan' => ['required', 'numeric', 'min:1'],
             'tinggi_badan' => ['required', 'numeric', 'max:120', 'min:45'],
