@@ -7,7 +7,42 @@
     Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 
+$("#yearChart").on('change', function(){
+  initiateAjax(this.value);
+})
+
 $(window).on('load', function () {
+  // On load Toast
+  setTimeout(function () {
+    toastr['success'](
+      '',
+      'Anda berhasil login!',
+      {
+        closeButton: true,
+        tapToDismiss: false,
+        rtl: isRtl
+      }
+    );
+  }, 2000);
+
+  initiateAjax(2022);
+});
+
+function initiateAjax($year){
+  $.ajax({
+    type: "GET",
+    url: "ajax/getDataDashboard",
+    data: { 
+        "year": $year
+    },
+    success: function(data) {
+        generateChart(data.giziBaik, data.giziBuruk);
+    }
+  });
+}
+
+//$(window).on('load', function () {
+function generateChart($giziBaik, $giziBuruk) {
   'use strict';
 
   var $barColor = '#f3f3f3';
@@ -56,19 +91,6 @@ $(window).on('load', function () {
   var browserStateWarningChart;
   var goalOverviewChart;
   var isRtl = $('html').attr('data-textdirection') === 'rtl';
-
-  // On load Toast
-  setTimeout(function () {
-    toastr['success'](
-      '',
-      'Anda berhasil login!',
-      {
-        closeButton: true,
-        tapToDismiss: false,
-        rtl: isRtl
-      }
-    );
-  }, 2000);
 
   //------------ Statistics Bar Chart ------------
   //----------------------------------------------
@@ -322,13 +344,12 @@ $(window).on('load', function () {
   revenueReportChartOptions = {
     chart: {
       height: 230,
-      stacked: true,
       type: 'bar',
       toolbar: { show: false }
     },
     plotOptions: {
       bar: {
-        columnWidth: '17%',
+        columnWidth: '55%',
         endingShape: 'rounded'
       },
       distributed: true
@@ -336,12 +357,12 @@ $(window).on('load', function () {
     colors: [window.colors.solid.primary, window.colors.solid.warning],
     series: [
       {
-        name: 'Earning',
-        data: [95, 177, 284, 256, 105, 63, 168, 218, 72]
+        name: 'Gizi Baik',
+        data: $giziBaik
       },
       {
-        name: 'Expense',
-        data: [-145, -80, -60, -180, -100, -60, -85, -75, -100]
+        name: 'Gizi Buruk',
+        data: $giziBuruk
       }
     ],
     dataLabels: {
@@ -354,13 +375,10 @@ $(window).on('load', function () {
       padding: {
         top: -20,
         bottom: -10
-      },
-      yaxis: {
-        lines: { show: false }
       }
     },
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
       labels: {
         style: {
           colors: $textMutedColor,
@@ -379,6 +397,13 @@ $(window).on('load', function () {
         style: {
           colors: $textMutedColor,
           fontSize: '0.86rem'
+        }
+      }
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val + " balita"
         }
       }
     }
@@ -707,4 +732,4 @@ $(window).on('load', function () {
   };
   goalOverviewChart = new ApexCharts($goalOverviewChart, goalOverviewChartOptions);
   goalOverviewChart.render();
-});
+};

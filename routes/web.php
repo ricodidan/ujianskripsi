@@ -28,8 +28,8 @@ use App\Http\Controllers\ChartsController;
 */
 
 // Main Page Route
-// Route::get('/', [DashboardController::class,'dashboardEcommerce'])->name('dashboard-ecommerce')->middleware('verified');
-Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
+// Route::get('/', [DashboardController::class,'dashboard'])->name('dashboard-ecommerce')->middleware('verified');
+Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 
 Auth::routes(['verify' => true]);
 
@@ -40,6 +40,8 @@ Route::group(['prefix' => 'dashboard'], function () {
 });
 /* Route Dashboards */
 
+Route::get('/ajax/getDataBalita', [App\Http\Controllers\BalitaController::class, 'getDataBalita']);
+Route::get('/ajax/getDataDashboard', [App\Http\Controllers\DashboardController::class, 'getDataDashboard']);
 
 Route::get('/balita', [App\Http\Controllers\BalitaController::class, 'index'])->name('balita');
 Route::get('/balita/create', [App\Http\Controllers\BalitaController::class, 'create'])->name('balita');
@@ -47,7 +49,6 @@ Route::post('/balita/create', [App\Http\Controllers\BalitaController::class, 'cr
 Route::get('/balita/edit/{id}', [App\Http\Controllers\BalitaController::class, 'edit'])->name('balita');
 Route::post('/balita/edit/{id}', [App\Http\Controllers\BalitaController::class, 'editSubmit']);
 Route::get('/balita/delete/{id}', [App\Http\Controllers\BalitaController::class, 'delete']);
-Route::get('/ajax/getDataBalita', [App\Http\Controllers\BalitaController::class, 'getDataBalita']);
 
 Route::get('/rekomendasi', [App\Http\Controllers\RekomendasiController::class, 'index'])->name('rekomendasi');
 Route::post('/rekomendasi/hitung', [App\Http\Controllers\RekomendasiController::class, 'hitung']);
