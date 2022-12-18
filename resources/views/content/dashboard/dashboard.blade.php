@@ -56,7 +56,7 @@
                   <span class="mr-1">Tahun</span>
                   <select class="form-control" id="yearChart">
                     <option value="2023">2023</option>
-                    <option value="2022">2022</option>
+                    <option value="2022" selected>2022</option>
                   </select>
                 </div>
               </div>
@@ -79,5 +79,138 @@
 @endsection
 @section('page-script')
   {{-- Page js files --}}
-  <script src="{{ asset(mix('js/scripts/pages/dashboard-ecommerce.js')) }}"></script>
+  {{-- <script src="{{ asset(mix('js/scripts/pages/dashboard-ecommerce.js')) }}"></script> --}}
+  <script>
+    'use strict';
+
+    var $barColor = '#f3f3f3';
+    var $trackBgColor = '#EBEBEB';
+    var $textMutedColor = '#b9b9c3';
+    var $budgetStrokeColor2 = '#dcdae3';
+    var $goalStrokeColor2 = '#51e5a8';
+    var $strokeColor = '#ebe9f1';
+    var $textHeadingColor = '#5e5873';
+    var $earningsStrokeColor2 = '#28c76f66';
+    var $earningsStrokeColor3 = '#28c76f33';
+
+    var $revenueReportChart = document.querySelector('#revenue-report-chart');
+
+    var revenueReportChartOptions;
+
+    var revenueReportChart;
+    var isRtl = $('html').attr('data-textdirection') === 'rtl';
+
+    //------------ Revenue Report Chart ------------
+    //----------------------------------------------
+    revenueReportChartOptions = {
+      chart: {
+        height: 230,
+        type: 'bar',
+        toolbar: { show: false }
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: '55%',
+          endingShape: 'rounded'
+        },
+        distributed: true
+      },
+      colors: [window.colors.solid.primary, window.colors.solid.warning],
+      series: [
+        {
+          name: 'Gizi Baik',
+          data: []
+        },
+        {
+          name: 'Gizi Buruk',
+          data: []
+        }
+      ],
+      dataLabels: {
+        enabled: false
+      },
+      legend: {
+        show: false
+      },
+      grid: {
+        padding: {
+          top: -20,
+          bottom: -10
+        }
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+        labels: {
+          style: {
+            colors: $textMutedColor,
+            fontSize: '0.86rem'
+          }
+        },
+        axisTicks: {
+          show: false
+        },
+        axisBorder: {
+          show: false
+        }
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: $textMutedColor,
+            fontSize: '0.86rem'
+          }
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return val + " balita"
+          }
+        }
+      }
+    };
+    revenueReportChart = new ApexCharts($revenueReportChart, revenueReportChartOptions);
+    revenueReportChart.render();
+
+    $("#yearChart").on('change', function(){
+      initiateAjax(this.value);
+    })
+
+$(window).on('load', function () {
+  // On load Toast
+  setTimeout(function () {
+    toastr['success'](
+      '',
+      'Anda berhasil login!',
+      {
+        closeButton: true,
+        tapToDismiss: false,
+        rtl: isRtl
+      }
+    );
+  }, 2000);
+
+  initiateAjax(2022);
+});
+
+function initiateAjax($year){
+  $.ajax({
+    type: "GET",
+    url: "ajax/getDataDashboard",
+    data: { 
+        "year": $year
+    },
+    success: function(data) {
+      revenueReportChart.updateSeries([{
+        name: 'Gizi Baik',
+        data: data.giziBaik
+      },
+      {
+        name: 'Gizi Buruk',
+        data: data.giziBuruk
+      }])
+    }
+  });
+}
+    </script>
 @endsection

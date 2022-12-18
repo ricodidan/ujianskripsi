@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Balita;
+use App\Models\RekomendasiDetail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -35,14 +38,29 @@ class DashboardController extends Controller
     
   public function getDataDashboard(Request $request)
   {
-      if($request->year == "2022"){
-        $giziBaik = [100, 10, 28, 25, 10, 63, 16, 21, 72, 20, 31, 15];
-        $giziBuruk = [14, 80, 60, 18, 10, 60, 85, 75, 10, 55, 75, 30];
-      }
-      else if($request->year == "2023"){
-        $giziBaik = [30, 10, 28, 25, 10, 63, 16, 21, 72, 20, 31, 15];
-        $giziBuruk = [44, 80, 60, 18, 10, 60, 85, 75, 10, 55, 75, 30];
-      }
-      return array('giziBaik'=>$giziBaik, 'giziBuruk'=>$giziBuruk);
+    $giziBaikArray = [];
+    $giziBurukArray = [];
+
+    for($i = 1; $i <= 12; $i++){
+      $date = Carbon::createFromDate($request->year, $i, 5);
+      $startDate = $date->copy()->firstOfMonth();
+      $endDate = $date->copy()->lastOfMonth();
+
+      $messages = RekomendasiDetail::whereBetween('created_at', [$startDate, $endDate])
+              ->groupBy('id_balita')
+              ->get();
+
+      $giziBaik = $messages->filter(function ($item) {
+        return $item->total_bobot >= 0;
+      });
+
+      $giziBuruk = $messages->filter(function ($item) {
+        return $item->total_bobot < 0;
+      });
+
+      array_push($giziBaikArray, count($giziBaik));
+      array_push($giziBurukArray, count($giziBuruk));
+    }
+    return array('giziBaik'=>$giziBaikArray, 'giziBuruk'=>$giziBurukArray);
   }
 }

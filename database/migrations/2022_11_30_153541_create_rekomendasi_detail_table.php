@@ -20,6 +20,7 @@ class CreateRekomendasiDetailTable extends Migration
             $table->decimal('total_bobot');
             $table->string('nama_balita');
             $table->integer('ranking');
+            $table->timestamps();
         });
     }
 

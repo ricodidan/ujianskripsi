@@ -22,7 +22,6 @@ class RekomendasiDetail extends Model
      */
     protected $primaryKey = 'id_rekomendasi_detail';
     protected $table = 'rekomendasi_detail';
-    public $timestamps = false;
 
     public function rekomendasiDetailZscore()
     {
