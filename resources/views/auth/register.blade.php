@@ -14,7 +14,7 @@
     <div class="card mb-0">
       <div class="card-body">
         <a href="javascript:void(0);" class="brand-logo">
-          <h2 class="brand-text text-primary ml-1 text-center">Sistem Pendukung Keputusan Prioritas Bantuan Balita</h2>
+          <h2 class="brand-text text-primary ml-1 text-center">Sistem Informasi Pengelolaan Limbah Sisa Makanan Tilo Organizer</h2>
         </a>
 
         <h4 class="card-title mb-1">Buat akun</h4>
@@ -82,7 +82,19 @@
             <input id="password-confirm" type="password" class="form-control form-control-merge" name="password_confirmation" required autocomplete="new-password">
           </div>
 
-          
+          <div class="form-group">
+            <label class="form-label" for="role">Role</label>
+              <select class="form-control @error('role') is-invalid @enderror" name="role">
+                <option value="1">Tilo Organizer</option>
+                <option value="2">Petugas Kebersihan</option>
+              </select>
+            @error('role')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+          </div>
+
           <button type="submit" class="btn btn-primary btn-block" tabindex="5">Daftar</button>
         </form>
 

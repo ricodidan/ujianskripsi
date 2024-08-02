@@ -16,6 +16,9 @@ use App\Http\Controllers\MiscellaneousController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ChartsController;
 
+
+use App\Http\Controllers\LimbahController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,6 +42,9 @@ Route::group(['prefix' => 'dashboard'], function () {
     Route::get('ecommerce', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
 });
 /* Route Dashboards */
+
+Route::get('/informasi/sampah', [App\Http\Controllers\LimbahController::class, 'index'])->name('informasi.limbah');
+Route::get('/informasi/sampah/detail', [App\Http\Controllers\LimbahController::class, 'show'])->name('informasi.detail');
 
 Route::get('/ajax/getDataBalita', [App\Http\Controllers\BalitaController::class, 'getDataBalita']);
 Route::get('/ajax/getDataDashboard', [App\Http\Controllers\DashboardController::class, 'getDataDashboard']);

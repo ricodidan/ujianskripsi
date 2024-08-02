@@ -6,7 +6,7 @@ $configData = Helper::applClasses();
     <ul class="nav navbar-nav flex-row">
       <li class="nav-item mr-auto">
         <a class="navbar-brand" href="{{url('/')}}">
-          <h2 class="brand-text">SPK Prioritas <br> Bantuan Balita</h2>
+          <h2 class="brand-text" style="font-size: 1rem;">Sistem Informasi <br> Pengelolaan Limbah <br> Sisa Makanan Tilo Organizer</h2>
         </a>
       </li>
     </ul>

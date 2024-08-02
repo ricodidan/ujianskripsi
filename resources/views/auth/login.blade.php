@@ -14,7 +14,7 @@
     <div class="card mb-0">
       <div class="card-body">
         <a href="javascript:void(0);" class="brand-logo">
-          <h2 class="brand-text text-primary ml-1 text-center">Sistem Pendukung Keputusan Prioritas Bantuan Balita</h2>
+          <h2 class="brand-text text-primary ml-1 text-center">Sistem Informasi Pengelolaan Limbah Sisa Makanan Tilo Organizer</h2>
         </a>
 
         <h4 class="card-title mb-1">Selamat datang</h4>
@@ -23,10 +23,10 @@
         <form class="auth-login-form mt-2" method="POST" action="{{ route('login') }}">
           @csrf
           <div class="form-group">
-            
+
             <label class="form-label" for="username">Username</label>
             <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
-          
+
             @error('username')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -35,12 +35,12 @@
           </div>
 
           <div class="form-group">
-            
+
             <div class="d-flex justify-content-between">
               <label for="login-password">Password</label>
             </div>
             <div class="input-group input-group-merge form-password-toggle">
-              
+
               <input id="login-password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
               @error('password')

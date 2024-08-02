@@ -2,15 +2,15 @@
   "menu": [
     {
       "url": "/",
-      "name": "Dashboards",
+      "name": "Grafik Sampah",
       "icon": "home",
       "slug": "dashboard"
     },
     {
-      "url": "balita",
-      "name": "Balita",
-      "icon": "user",
-      "slug": "balita"
+      "url": "informasi/sampah",
+      "name": "Info Sampah",
+      "icon": "list",
+      "slug": "informasi.limbah"
     },
     {
       "url": "rekomendasi",

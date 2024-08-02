@@ -19,9 +19,9 @@ class DashboardController extends Controller
   {
       $this->middleware('auth');
   }
-  
+
   // Dashboard - Analytics
-  public function dashboardAnalytics()
+  public function dashboarddashboardAnalytics()
   {
     $pageConfigs = ['pageHeader' => false];
 
@@ -35,7 +35,7 @@ class DashboardController extends Controller
     $jumlahBalita = Balita::count();
     return view('/content/dashboard/dashboard', ['pageConfigs' => $pageConfigs, 'jumlahBalita' => $jumlahBalita]);
   }
-    
+
   public function getDataDashboard(Request $request)
   {
     $giziBaikArray = [];
