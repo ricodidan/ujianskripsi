@@ -20,21 +20,6 @@
 <section id="dashboard-ecommerce">
 
   <div class="row match-height">
-    {{--<div class="col-lg-4 col-12">
-      <div class="row match-height">
-
-        <!-- Line Chart - Profit -->
-        <div class="col-lg-12 col-md-6 col-12">
-          <div class="card card-tiny-line-stats">
-            <div class="card-body pb-50">
-              <h6>Jumlah Balita</h6>
-              <h2 class="font-weight-bolder mb-1">{{ $jumlahBalita }}</h2>
-            </div>
-          </div>
-        </div>
-        <!--/ Line Chart - Profit -->
-      </div>
-    </div>--}}
 
     <!-- Revenue Report Card -->
     <div class="col-lg-12 col-12">
@@ -51,6 +36,10 @@
                 <div class="d-flex align-items-center ml-75">
                   <span class="bullet bullet-warning font-small-3 mr-50 cursor-pointer"></span>
                   <span>Anorganik</span>
+                </div>
+                <div class="d-flex align-items-center ml-75">
+                  <span class="bullet bullet-success font-small-3 mr-50 cursor-pointer"></span>
+                  <span>Daur Ulang</span>
                 </div>
                 <div class="d-flex align-items-center ml-4">
                   <span class="mr-1">Tahun</span>
@@ -74,52 +63,33 @@
           <div class="dropdown chart-dropdown">
             <div class="d-flex align-items-center ml-4">
               <span class="mr-1">Tahun</span>
-              <select class="form-control" id="yearChart">
+              <select class="form-control" id="yearPieChart">
                 <option value="2024" selected>2024</option>
               </select>
             </div>
-            <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownItem1">
-              <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-              <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-              <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-            </div> -->
           </div>
         </div>
         <div class="card-body">
           <div id="session-chart" class="my-1"></div>
-          <div class="d-flex justify-content-between mb-1">
-            <div class="d-flex align-items-center">
-              <i data-feather="circle" class="font-medium-2 text-primary"></i>
-              <span class="font-weight-bold ml-75 mr-25">Desktop</span>
-              <span>- 58.6%</span>
+          @foreach($listPies as $list)
+            <div class="d-flex justify-content-between mb-1">
+              <div class="d-flex align-items-center">
+                @if($list->id_statussampah == 1)
+                  <i data-feather="circle" class="font-medium-2 text-secondary"></i>
+                @elseif($list->id_statussampah == 2)
+                  <i data-feather="circle" class="font-medium-2 text-primary"></i>
+                @elseif($list->id_statussampah == 3)
+                  <i data-feather="circle" class="font-medium-2 text-success"></i>
+                @elseif($list->id_statussampah == 4)
+                  <i data-feather="circle" class="font-medium-2 text-danger"></i>
+                @endif
+                <span class="font-weight-bold ml-75 mr-25">{{ $list->label }}</span>
+              </div>
+              <div>
+                <span>{{ $list->value }} total</span>
+              </div>
             </div>
-            <div>
-              <span>2%</span>
-              <i data-feather="arrow-up" class="text-success"></i>
-            </div>
-          </div>
-          <div class="d-flex justify-content-between mb-1">
-            <div class="d-flex align-items-center">
-              <i data-feather="circle" class="font-medium-2 text-warning"></i>
-              <span class="font-weight-bold ml-75 mr-25">Mobile</span>
-              <span>- 34.9%</span>
-            </div>
-            <div>
-              <span>8%</span>
-              <i data-feather="arrow-up" class="text-success"></i>
-            </div>
-          </div>
-          <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center">
-              <i data-feather="circle" class="font-medium-2 text-danger"></i>
-              <span class="font-weight-bold ml-75 mr-25">Tablet</span>
-              <span>- 6.5%</span>
-            </div>
-            <div>
-              <span>-5%</span>
-              <i data-feather="arrow-down" class="text-danger"></i>
-            </div>
-          </div>
+          @endforeach
         </div>
       </div>
     </div>
@@ -137,7 +107,7 @@
 @section('page-script')
   {{-- Page js files --}}
   {{-- <script src="{{ asset(mix('js/scripts/pages/dashboard-ecommerce.js')) }}"></script> --}}
-  <script src="{{ asset(mix('js/scripts/cards/card-analytics.js')) }}"></script>
+  {{-- <script src="{{ asset(mix('js/scripts/cards/card-analytics.js')) }}"></script> --}}
   <script>
     'use strict';
 
@@ -173,14 +143,18 @@
         },
         distributed: true
       },
-      colors: [window.colors.solid.primary, window.colors.solid.warning],
+      colors: [window.colors.solid.primary, window.colors.solid.warning, window.colors.solid.success],
       series: [
         {
-          name: 'Gizi Baik',
+          name: 'Organik',
           data: []
         },
         {
-          name: 'Gizi Buruk',
+          name: 'Anorganik',
+          data: []
+        },
+        {
+          name: 'Daur Ulang',
           data: []
         }
       ],
@@ -222,7 +196,7 @@
       tooltip: {
         y: {
           formatter: function (val) {
-            return val + " balita"
+            return val + " kg"
           }
         }
       }
@@ -232,7 +206,17 @@
 
     $("#yearChart").on('change', function(){
       initiateAjax(this.value);
-    })
+    });
+
+    $("#yearPieChart").on('change', function(){
+      pieAjax(this.value);
+    });
+
+
+    //SESSION CHART
+    var sessionChartOptions;
+    var sessionChart;
+    var $sessionChart = document.querySelector('#session-chart');
 
 $(window).on('load', function () {
   // On load Toast
@@ -248,7 +232,8 @@ $(window).on('load', function () {
     );
   }, 2000);
 
-  initiateAjax(2022);
+  initiateAjax($('#yearChart').val());
+  pieAjax($('#yearPieChart').val());
 });
 
 function initiateAjax($year){
@@ -260,15 +245,69 @@ function initiateAjax($year){
     },
     success: function(data) {
       revenueReportChart.updateSeries([{
-        name: 'Gizi Baik',
-        data: data.giziBaik
+        name: 'Organik',
+        data: data.organik
       },
       {
-        name: 'Gizi Buruk',
-        data: data.giziBuruk
+        name: 'Anorganik',
+        data: data.anorganik
+      },
+      {
+        name: 'Daur Ulang',
+        data: data.daurulang
       }])
     }
   });
 }
+
+    function pieAjax($year){
+      $.ajax({
+        type: "GET",
+        url: "ajax/getDataPieDashboard",
+        data: {
+            "year": $year
+        },
+        success: function(data) {
+          // Parse JSON data
+          const result = JSON.parse(data).data;
+          const labels = result.map(item => item.label);
+          const values = result.map(item => item.value);
+
+          sessionChartOptions = {
+            chart: {
+              type: 'donut',
+              height: 300,
+              toolbar: {
+                show: false
+              },
+              tooltip: {
+                show: false
+              }
+            },
+            dataLabels: {
+              enabled: true,
+              formatter: function (val) {
+                return val + "%"
+              },
+            },
+            series: values,
+            legend: { show: false },
+            comparedResult: [2, -3, 8],
+            labels: labels,
+            stroke: { width: 0 },
+            colors: [window.colors.solid.secondary, window.colors.solid.primary, window.colors.solid.success, window.colors.solid.danger],
+            tooltip: {
+              y: {
+                formatter: function (val) {
+                  return val + "%"
+                },
+            },
+            }
+          };
+          sessionChart = new ApexCharts($sessionChart, sessionChartOptions);
+          sessionChart.render();
+        }
+      });
+    }
     </script>
 @endsection

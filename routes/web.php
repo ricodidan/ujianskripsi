@@ -16,8 +16,8 @@ use App\Http\Controllers\MiscellaneousController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ChartsController;
 
-
-use App\Http\Controllers\LimbahController;
+use App\Http\Controllers\InfoSampahController;
+use App\Http\Controllers\DataSampahController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,11 +43,14 @@ Route::group(['prefix' => 'dashboard'], function () {
 });
 /* Route Dashboards */
 
-Route::get('/informasi/sampah', [App\Http\Controllers\LimbahController::class, 'index'])->name('informasi.limbah');
-Route::get('/informasi/sampah/detail', [App\Http\Controllers\LimbahController::class, 'show'])->name('informasi.detail');
+Route::resources([
+    'info-sampah' => InfoSampahController::class,
+    'data-sampah' => DataSampahController::class,
+]);
 
 Route::get('/ajax/getDataBalita', [App\Http\Controllers\BalitaController::class, 'getDataBalita']);
 Route::get('/ajax/getDataDashboard', [App\Http\Controllers\DashboardController::class, 'getDataDashboard']);
+Route::get('/ajax/getDataPieDashboard', [App\Http\Controllers\DashboardController::class, 'getDataPieDashboard']);
 
 Route::get('/balita', [App\Http\Controllers\BalitaController::class, 'index'])->name('balita');
 Route::get('/balita/create', [App\Http\Controllers\BalitaController::class, 'create'])->name('balita');

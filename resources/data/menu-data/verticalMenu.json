@@ -1,34 +1,28 @@
 {
   "menu": [
     {
+      "url": "info-sampah",
+      "name": "Info Sampah",
+      "icon": "list",
+      "slug": "info-sampah.index"
+    },
+    {
+      "url": "data-sampah",
+      "name": "Data Sampah",
+      "icon": "database",
+      "slug": "data-sampah.index"
+    },
+    {
       "url": "/",
       "name": "Grafik Sampah",
-      "icon": "home",
+      "icon": "bar-chart-2",
       "slug": "dashboard"
     },
     {
-      "url": "informasi/sampah",
-      "name": "Info Sampah",
-      "icon": "list",
-      "slug": "informasi.limbah"
-    },
-    {
-      "url": "rekomendasi",
-      "name": "Rekomendasi",
-      "icon": "filter",
-      "slug": "rekomendasi"
-    },
-    {
-      "url": "laporan",
-      "name": "Laporan Rekomendasi",
-      "icon": "file-text",
-      "slug": "laporan-rekomendasi"
-    },
-    {
-      "url": "help",
-      "name": "Help",
-      "icon": "help-circle",
-      "slug": "help"
+      "url": "/",
+      "name": "Logout",
+      "icon": "log-out",
+      "slug": "logout"
     }
   ]
 }
